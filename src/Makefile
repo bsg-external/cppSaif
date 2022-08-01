@@ -21,7 +21,7 @@
 #
 #
 
-INCDIRS = -I.
+INCDIRS = -I. -I/opt/local/include -L/opt/local/lib
 TARGETS = saif_db.o saif_parser.o
 LINK_FLAGS = -lgmp -lgmpxx
 
@@ -38,7 +38,7 @@ $(TARGETS): %.o:%.cpp %.hpp
 	$(CXX) $(INCDIRS) $(CXXFLAGS) -c $< -o $@
 
 test: test.cpp
-	$(CXX) $< saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
+	$(CXX) $< $(INCDIRS) saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
 
 bison: saif.cc
 

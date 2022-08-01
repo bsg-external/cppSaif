@@ -21,6 +21,9 @@
 #
 #
 
+# dependences: gmp and boost
+#
+
 # global variables
 #TARGET = RELEASE
 TARGET = DEBUG
@@ -30,9 +33,9 @@ export CXX = g++
 export MC_FLAG =
 
 ifeq ($(TARGET),RELEASE)
-	export CXXFLAGS = -std=c++0x -Wall -Wextra -o2 -DNDEBUG
+	export CXXFLAGS = -std=c++0x -Wall -Wextra -o2 -DNDEBUG -I/opt/local/include/
 else
-	export CXXFLAGS = -std=c++0x -Wall -Wextra -g3
+	export CXXFLAGS = -std=c++0x -Wall -Wextra -g3 -I/opt/local/include/
 endif
 
 export LINKFLAGS = -lgmpxx -lgmp
@@ -41,7 +44,7 @@ SUBDIRS = src
 BISONDIRS = src.bison
 
 all: bison subdirs
-	-mkdir bin
+	-mkdir -p bin
 	-mv src/test bin/
 
 bison: $(BISONDIRS)
