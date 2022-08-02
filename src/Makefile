@@ -45,6 +45,16 @@ filter: filter.cpp saif_db.hpp saif_db.cpp
 	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
 	./filter ../test.saif tb_yowz tb_yowzA
 
+merge: merge.cpp saif_db.hpp saif_db.cpp
+	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
+	./merge ../test.saif  ../test.saif ../test.saif ../test.saif
+
+merge-test-mismatch: merge
+	./merge ../test.saif  ../test3.saif
+
+merge-test-superset: merge
+	./merge ../test.saif  ../test2.saif
+
 bison: saif.cc
 
 saif.cc: saif.y

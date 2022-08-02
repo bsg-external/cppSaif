@@ -38,6 +38,7 @@
 #include <boost/shared_ptr.hpp>
 
 
+extern void print_string_list(std::list<std::string> string_list);
 namespace saif {
 
   // a switch record
@@ -84,6 +85,51 @@ namespace saif {
     virtual std::ostream& streamout ( std::ostream&, const std::string&, unsigned int indent = 0) const;
     virtual std::ostream& streamout ( std::ostream& ) const;
 
+
+    boost::shared_ptr<SaifInstance> lookup(std::list<std::string> path_list)
+    {
+      std::map<std::string, boost::shared_ptr<SaifInstance> >::iterator it;
+					      
+      boost::shared_ptr<SaifInstance> curInstance = NULL;
+
+      for (std::string x: path_list) {
+	if (curInstance == NULL) {
+	  it = instances.find(x);
+	  if (it != instances.end())
+	    curInstance = instances[x];
+	  else {
+	    // std::cout << "WARNING: failed to find" << x << " in "; print_string_list(path_list);
+	    return NULL;
+	  }
+	}
+	else {
+	  it = curInstance->instances.find(x);
+	  if (it != curInstance->instances.end())
+	    curInstance = (curInstance->instances[x]);
+	  else {
+	    // std::cout << "WARNING: failed to find" << x << " in "; print_string_list(path_list);
+	    return NULL;
+	  }
+	}
+      }
+
+      return curInstance;
+    }
+    
+    void visit(std::list<std::string> path_list, void (*fn)(std::list<std::string>))
+    {
+      std::map<std::string,boost::shared_ptr<SaifInstance> >::iterator itr = instances.begin();
+
+      // visit all of the children
+      while (itr != instances.end()) {
+	path_list.push_back((*itr).first);
+	(*itr).second->visit(path_list,fn);
+	path_list.pop_back();
+	++itr;
+      }
+      fn (path_list);
+    }
+    
     void filter(std::list<std::string> filter_list)
     {
       std::map<std::string,boost::shared_ptr<SaifInstance> >::iterator itr = instances.begin();
