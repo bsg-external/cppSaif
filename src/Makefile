@@ -27,7 +27,7 @@ LINK_FLAGS = -lgmp -lgmpxx
 CXXFLAGS = -dYYDEBUG -std=c++11
 BISON_EXE = /opt/local/bin/bison
 
-all: saif.o saif_util.o $(TARGETS) test
+all: saif.o saif_util.o $(TARGETS) test merge filter
 
 saif.o: saif.cc saif.y saif_util.hpp saif_db.hpp
 	$(CXX) $(INCDIRS) $(CXXFLAGS) -c $< -o $@
@@ -39,21 +39,26 @@ $(TARGETS): %.o:%.cpp %.hpp
 	$(CXX) $(INCDIRS) $(CXXFLAGS) -c $< -o $@
 
 test: test.cpp
-	$(CXX) $< $(INCDIRS) saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
+	$(CXX) $< $(INCDIRS) $(CXXFLAGS) saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
 
 filter: filter.cpp saif_db.hpp saif_db.cpp
 	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
+
+
+filter-test: filter
 	./filter ../test.saif tb_yowz tb_yowzA
 
 merge: merge.cpp saif_db.hpp saif_db.cpp
 	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
-	./merge ../test.saif  ../test.saif ../test.saif ../test.saif
 
 merge-test-mismatch: merge
 	./merge ../test.saif  ../test3.saif
 
 merge-test-superset: merge
 	./merge ../test.saif  ../test2.saif
+
+merge-test-quad: merge
+	./merge ../test.saif  ../test.saif ../test.saif ../test.saif
 
 bison: saif.cc
 
@@ -63,7 +68,7 @@ saif.cc: saif.y
 .PHONY: clean
 
 clean:
-	-rm -f *.o *.output
-	-rm -f saif.cc saif.hh stack.hh location.hh position.hh filter
+	-rm -f *.o *.output test
+	-rm -f saif.cc saif.hh stack.hh location.hh position.hh filter merge
 
 
