@@ -3,6 +3,7 @@
 %defines
 %define namespace "saif"
 %define parser_class_name "saif_parser"
+%define parse.error verbose
 %language "c++"
 %output "saif.cc"
 %parse-param {saif::SaifLexer* lexer}
@@ -39,6 +40,8 @@
 
 #include "saif_util.hpp"
 #include "saif_db.hpp"
+
+extern long yylineno;
 
 #define yylex lexer->lexer
 
@@ -141,6 +144,13 @@ saif_instance
       $$.second->module_name = $3;
       //std::cout << $$.first << " " << *($$.second) << std::endl;
     }
+    | '(' "INSTANCE" SString SVar ')'
+    {
+      $$.first = $4;
+      $$.second.reset(new saif::SaifInstance());
+      $$.second->module_name = $3;
+      // std::cout << $$.first << " " << *($$.second) << std::endl;
+    }
     | '(' "INSTANCE" SVar instance_contents ')'
     {
       $$.first = $3;
@@ -171,6 +181,32 @@ instance_contents
       $$.reset(new saif::SaifInstance());
       $$->signals = $1;
       $$->instances = $2;
+    }
+    | net_list port_list saif_instances
+    {
+      $$.reset(new saif::SaifInstance());
+      $$->signals = $1;
+      $$->ports   = $2;
+      $$->instances = $3;
+    }
+    | net_list port_list 
+    {
+      $$.reset(new saif::SaifInstance());
+      $$->signals = $1;
+      $$->ports   = $2;
+    }
+    | port_list net_list 
+    {
+      $$.reset(new saif::SaifInstance());
+      $$->ports   = $1;
+      $$->signals = $2;
+    }
+    | port_list net_list saif_instances
+    {
+      $$.reset(new saif::SaifInstance());
+      $$->ports   = $1;
+      $$->signals = $2;
+      $$->instances = $3;
     }
     | saif_instances
     {
@@ -285,5 +321,5 @@ activity
 %%
 
 void saif::saif_parser::error (const std::string& msg) {
-  std::cout << msg << std::endl;
-  }
+  std::cout << "line " << yylineno << ":" << msg << std::endl;
+}
