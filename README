@@ -22,6 +22,7 @@ File list:
     saif_util.hpp                  SAIF Lexer and utility classes
     saif_util.cpp  
     test.cpp                       A simple test program
+    filter.cpp                     An example program that allows you to filter out everything except a particular instance path in a SAIF file
   Makefile                         Globale Make file
   README                           Read me file
   README.md
