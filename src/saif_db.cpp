@@ -84,6 +84,15 @@ std::ostream& saif::SaifInstance::streamout( std::ostream& os, const std::string
   else
     os << "\"" << module_name << "\" " << name << std::endl;
 
+  if(!ports.empty()) {
+    os << std::string(indent+2, ' ') << "(PORT" << std::endl;
+    typedef std::pair<const string&, boost::shared_ptr<SaifSignal> > signal_type;
+    BOOST_FOREACH(signal_type it, ports) {
+      it.second->streamout(os, it.first, "", indent+4);
+    }
+    os << std::string(indent+2, ' ') << ")" << std::endl;
+  }
+  
   if(!signals.empty()) {
     os << std::string(indent+2, ' ') << "(NET" << std::endl;
     typedef std::pair<const string&, boost::shared_ptr<SaifSignal> > signal_type;

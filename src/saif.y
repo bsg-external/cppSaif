@@ -86,6 +86,7 @@
 %type <tSig>       signal
 %type <tSigList>   signal_lists
 %type <tSigList>   port_list
+%type <tSigList>   net_list
 %type <tInst>      instance_contents
 %type <tInstPair>  saif_instance
 %type <tInstList>  saif_instances
@@ -152,9 +153,20 @@ instance_contents
     : port_list
     { 
       $$.reset(new saif::SaifInstance());
-      $$->signals = $1;
+      $$->ports = $1;
     }
     | port_list saif_instances
+    {
+      $$.reset(new saif::SaifInstance());
+      $$->ports = $1;
+      $$->instances = $2;
+    }
+    | net_list
+    { 
+      $$.reset(new saif::SaifInstance());
+      $$->signals = $1;
+    }
+    | net_list saif_instances
     {
       $$.reset(new saif::SaifInstance());
       $$->signals = $1;
@@ -170,8 +182,12 @@ instance_contents
 
 port_list
     : '(' "PORT" signal_lists ')' { $$ = $3; }
-    | '(' "NET" signal_lists ')'  { $$ = $3; }
     ;
+
+net_list
+    : '(' "NET" signal_lists ')'  { $$ = $3; }
+    ;
+
 
 signal_lists
     : signal               

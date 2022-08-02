@@ -29,6 +29,7 @@
 #ifndef SAIF_DB_H_
 #define SAIF_DB_H_
 
+#include <list>
 #include <string>
 #include <iostream>
 #include <map>
@@ -76,11 +77,43 @@ namespace saif {
   class SaifInstance {
   public:
     std::map<std::string, boost::shared_ptr<SaifSignal> > signals;
+    std::map<std::string, boost::shared_ptr<SaifSignal> > ports;
     std::map<std::string, boost::shared_ptr<SaifInstance> > instances;
     std::string module_name;
 
     virtual std::ostream& streamout ( std::ostream&, const std::string&, unsigned int indent = 0) const;
     virtual std::ostream& streamout ( std::ostream& ) const;
+
+    void filter(std::list<std::string> filter_list)
+    {
+      std::map<std::string,boost::shared_ptr<SaifInstance> >::iterator itr = instances.begin();
+      /*
+      std::cout << "filtering ";
+      for (std::string x: filter_list) {
+	std::cout << x << ' ';
+      }
+
+      std::cout << "\n";
+      */
+      //std::cout << instances;
+      
+      if (filter_list.empty())
+	return;
+      
+      while (itr != instances.end()) {
+	if ((*itr).first == filter_list.front()) {
+	  //	  std::cout << "natched " << (*itr).first << "\n";
+	  std::string temp = filter_list.front();
+	    filter_list.pop_front();
+	    (*itr).second->filter(filter_list);
+	    filter_list.push_front(temp);
+	    ++itr;
+	} else {
+	  //std::cout << "nuke " << (*itr).first << " vs " << filter_list.front() << "\n";
+	  itr = instances.erase(itr);
+	}
+      }
+    }
   };
 
   inline std::ostream& operator<< ( std::ostream& os, const SaifInstance& rhs) {

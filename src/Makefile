@@ -24,7 +24,8 @@
 INCDIRS = -I. -I/opt/local/include -L/opt/local/lib
 TARGETS = saif_db.o saif_parser.o
 LINK_FLAGS = -lgmp -lgmpxx
-
+CXXFLAGS = -dYYDEBUG -std=c++11
+BISON_EXE = /opt/local/bin/bison
 
 all: saif.o saif_util.o $(TARGETS) test
 
@@ -40,6 +41,10 @@ $(TARGETS): %.o:%.cpp %.hpp
 test: test.cpp
 	$(CXX) $< $(INCDIRS) saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
 
+filter: filter.cpp saif_db.hpp saif_db.cpp
+	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
+	./filter ../test.saif tb_yowz tb_yowzA
+
 bison: saif.cc
 
 saif.cc: saif.y
@@ -48,7 +53,7 @@ saif.cc: saif.y
 .PHONY: clean
 
 clean:
-	-rm *.o *.output
-	-rm saif.cc saif.hh stack.hh location.hh position.hh
+	-rm -f *.o *.output
+	-rm -f saif.cc saif.hh stack.hh location.hh position.hh filter
 
 
