@@ -39,6 +39,8 @@ using std::pair;
 
 #define TType saif_parser::token 
 
+long yylineno = 0;
+
 saif::SaifLexer::SaifLexer(std::istream * i) 
   : istm(i), m_string("") { state.push_back(pair<unsigned int, unsigned int>(S_BEGIN, 0)); }
 
@@ -46,7 +48,7 @@ int saif::SaifLexer::lexer(saif_token_type * rv) {
   while(true) {
     if(buf.empty()) {
       if(istm->eof()) return 0;
-      else std::getline(*istm, buf);
+      else { yylineno++; std::getline(*istm, buf); }
       //std::cout << "buf: " << buf << std::endl;
     }
 
