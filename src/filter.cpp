@@ -20,8 +20,7 @@
 */
 
 /*
-* Saif parser test
-* 07/02/2014 Wei Song
+* SAIF Filter Function
 *
 *
 */
