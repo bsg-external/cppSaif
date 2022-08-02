@@ -77,4 +77,5 @@ int main(int argc, char* argv[]) {
       fileNum++;
      
       return 0;
-    }
+     }
+}
