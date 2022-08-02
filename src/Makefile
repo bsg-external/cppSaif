@@ -24,7 +24,10 @@
 INCDIRS = -I. -I/opt/local/include -L/opt/local/lib
 TARGETS = saif_db.o saif_parser.o
 LINK_FLAGS = -lgmp -lgmpxx
-CXXFLAGS = -dYYDEBUG -std=c++11
+
+#PROFILE = -pg
+CXXFLAGS = -DYYDEBUG -std=c++11 -g -O2 $(PROFILE)
+
 BISON_EXE = /opt/local/bin/bison
 
 all: saif.o saif_util.o $(TARGETS) test merge filter
@@ -47,6 +50,9 @@ filter: filter.cpp saif_db.hpp saif_db.cpp
 
 filter-test: filter
 	./filter ../test.saif tb_yowz tb_yowzA
+	
+filter-test-complex: filter
+	./filter ../sa_tw_1.saif dut opt0 sha1 z\\\[0\\\] end dut opt0 sha1 z\\\[1\\\] end dut opt0 sha1 z\\\[2\\\] end
 
 merge: merge.cpp saif_db.hpp saif_db.cpp
 	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
