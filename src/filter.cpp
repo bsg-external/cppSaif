@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
        wait(&status);
      
       fileNum++;
-     
-      return 0;
      }
+       
+      return 0;
 }
