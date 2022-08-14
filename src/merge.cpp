@@ -29,19 +29,21 @@ void print_string_list(std::list<std::string> string_list)
 void merge_SaifRecord(std::list<std::string> path_list, std::string name, boost::shared_ptr<saif::SaifRecord> into, boost::shared_ptr<saif::SaifRecord> from)
 {
   if ((into != NULL))
+  {
     if (from == NULL)
       {
 	std::cout << "ERROR: missing saif record" << name; print_string_list(path_list);
 	return;
       }
 
-  into->T0 += from->T0;
-  into->T1 += from->T1;
-  into->TX += from->TX;
-  into->TZ += from->TZ;
-  into->TC += from->TC;
-  into->IG += from->IG;
-  into->TB += from->TB;
+    into->T0 += from->T0;
+    into->T1 += from->T1;
+    into->TX += from->TX;
+    into->TZ += from->TZ;
+    into->TC += from->TC;
+    into->IG += from->IG;
+    into->TB += from->TB;
+  }
 }
 
 void merge_SaifSignal(std::list<std::string> path_list, std::string name, boost::shared_ptr<saif::SaifSignal> into, boost::shared_ptr<saif::SaifSignal> from)
@@ -140,6 +142,8 @@ int main(int argc, char* argv[]) {
     exit(-1);
   }
 
+  std::cerr << "Parsing " << argv[1] << std::endl;
+
   saif::SaifParser parser(argv[1]);
   saif::SaifDB db;
   parser.parse(&db);
@@ -148,6 +152,7 @@ int main(int argc, char* argv[]) {
   
   for (int i = 2; i < argc; i++)
     {
+      std::cerr << "Parsing " << argv[i] << std::endl;	  
       saif::SaifParser parser2(argv[i]);
       saif::SaifDB db2;
       db2_global = &db2;
