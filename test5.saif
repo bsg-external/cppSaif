@@ -1,0 +1,39 @@
+(SAIFILE
+  (SAIFVERSION "2.0")
+
+(DIRECTION "backward")
+  (DESIGN )
+  (DATE "Aug 01 2022 15:34:08 PDT")
+  (VENDOR "Cadence Design Systems, Inc")
+  (PROGRAM_NAME "NC Simulation Engine")
+  (VERSION "TOOL:       xmsim ")
+  (DIVIDER . )
+  (TIMESCALE 1 fs )
+  (DURATION  14040000000)
+  (INSTANCE top
+  (INSTANCE tb_yowz
+    (INSTANCE "stage" foo
+    )
+    (INSTANCE "stage" bar
+    )
+   (INSTANCE tb_yowzA
+    (PORT
+        (clk_i
+           (T0 7020000000) (T1 7020000000) (TX 0)
+           (TZ 0) (TB 0) (TC 1403)
+        )
+     )
+  )
+   (INSTANCE tb_yowzB
+    (PORT
+        (clk_i
+           (T0 7020000000) (T1 7020000000) (TX 0)
+           (TZ 0) (TB 0) (TC 1403)
+        )
+     )
+  )
+
+)
+
+)
+)
