@@ -146,6 +146,10 @@ namespace saif {
       if (filter_list.empty())
 	return;
       
+      // clear signals and ports on way down to the module in question
+      signals.clear();
+      ports.clear();
+	    
       while (itr != instances.end()) {
 	if ((*itr).first == filter_list.front()) {
 	  //	  std::cout << "natched " << (*itr).first << "\n";
