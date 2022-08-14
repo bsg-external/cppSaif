@@ -42,6 +42,8 @@ bool saif::SaifParser::parse(SaifDB * db)
 {
   std::fstream saif_file_handler;
   saif_file_handler.open(saif_file);
+  if (!saif_file_handler.is_open())
+    { std::cerr << "Cannot open file: " << saif_file << "\n"; exit(-1); }
 
   SaifLexer * lexer = new SaifLexer(&saif_file_handler);
   saif_parser * parser = new saif_parser(lexer, db);
