@@ -58,9 +58,10 @@ std::ostream& saif::SaifSignal::streamout( std::ostream& os) const {
 
 std::ostream& saif::SaifSignal::streamout( std::ostream& os, const std::string& sig, const std::string& dim, unsigned int indent) const {
   if(bits.empty()) {
-    os << std::string(indent, ' ') << "(" << sig << dim << std::endl;
-    os << std::string(indent, ' ') << "    " << *data << std::endl;
-    os << std::string(indent, ' ') << ")" << std::endl;
+//    os << std::string(indent, ' ') << "(" << sig << dim << std::endl;
+//    os << std::string(indent, ' ') << "    " << *data << std::endl;
+//    os << std::string(indent, ' ') << ")" << std::endl;
+    os << std::string(indent, ' ') << "(" << sig << dim << " " << *data << ")" << std::endl;  
   } else {
     typedef std::pair<const int, boost::shared_ptr<SaifSignal> > signal_type;
     BOOST_FOREACH(signal_type it, bits) {
