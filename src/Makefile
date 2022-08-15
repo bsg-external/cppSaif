@@ -30,7 +30,7 @@ CXXFLAGS = -DYYDEBUG -std=c++11 -g -O2 $(PROFILE)
 
 BISON_EXE = /opt/local/bin/bison
 
-all: saif.o saif_util.o $(TARGETS) test merge filter adjust_clock
+all: saif.o saif_util.o $(TARGETS) test merge filter adjust_clock spa
 
 saif.o: saif.cc saif.y saif_util.hpp saif_db.hpp
 	$(CXX) $(INCDIRS) $(CXXFLAGS) -c $< -o $@
@@ -50,11 +50,14 @@ filter: filter.cpp saif_db.hpp saif_db.cpp
 adjust_clock: adjust_clock.cpp saif_db.hpp saif_db.cpp
 	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
 
+spa: set_power_activity.cpp saif_db.hpp saif_db.cpp
+	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
+
 
 
 filter-test: filter
 	./filter ../test.saif tb_yowz tb_yowzA
-	
+
 filter-test-complex: filter
 	./filter ../sa_tw_1.saif dut opt0 sha1 z\\\[0\\\] end dut opt0 sha1 z\\\[1\\\] end dut opt0 sha1 z\\\[2\\\] end
 
