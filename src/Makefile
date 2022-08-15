@@ -53,7 +53,8 @@ adjust_clock: adjust_clock.cpp saif_db.hpp saif_db.cpp
 spa: set_power_activity.cpp saif_db.hpp saif_db.cpp
 	$(CXX) $< $(INCDIRS) $(CXXFLAGS)  saif.o saif_util.o $(TARGETS) $(LINK_FLAGS) -o $@
 
-
+test-spa: spa
+	./spa ../test6.saif 65536
 
 filter-test: filter
 	./filter ../test.saif tb_yowz tb_yowzA
