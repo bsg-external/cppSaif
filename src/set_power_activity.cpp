@@ -41,12 +41,12 @@ void spa_SaifRecord(std::list<std::string> path_list,  std::string portname, boo
         std::cout << portname << " .lp_asserted_toggle_rate " << activity << ";";
         std::cout << "set_db pin:";
         print_string_list(path_list);
-        std::cout << portname << " .lp_asserted_probability " << (into->T0.get_d() / (into->T0.get_d() + into->T1.get_d())) << ";\n";
+        std::cout << portname << " .lp_asserted_probability " << (into->T1.get_d() / (into->T0.get_d() + into->T1.get_d())) << ";\n";
       } else {
         std::cout << "set_power_activity -pins ";
         print_string_list(path_list);
 
-        std::cout << portname << " -activity " << activity << " -duty " << (into->T0.get_d() / (into->T0.get_d() + into->T1.get_d()));
+        std::cout << portname << " -activity " << activity << " -duty " << (into->T1.get_d() / (into->T0.get_d() + into->T1.get_d()));
         std::cout << "\n";
       }
     }
